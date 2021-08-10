@@ -97,6 +97,31 @@ namespace SELS.Controllers
                 return false; 
             }
         }
+
+        [HttpPost]
+        [Route("api/user/login")]
+        public bool Login(string UserName,string Password)
+        {
+            try
+            {
+                SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["UserAppDB"].ConnectionString);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT COUNT(*) FROM [user] WHERE [username]='" + UserName + "' AND [password]='" + Password + "'", con);
+                DataTable dataTable = new DataTable();
+                sqlDataAdapter.Fill(dataTable);
+                if (dataTable.Rows[0][0].ToString() == "1")
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch(Exception)
+            {
+                return false;
+            }
+        }
         #endregion
 
     }
